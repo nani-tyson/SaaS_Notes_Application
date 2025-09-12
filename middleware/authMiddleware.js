@@ -24,13 +24,13 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-export const adminMiddleware = (req, res, next) => {
-    // We assume this middleware runs *after* the authMiddleware,
-    // so req.user will be populated.
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ msg: 'Forbidden: Admin access required' });
-    }
-    next();
+const adminMiddleware = (req, res, next) => {
+  // We assume this middleware runs *after* the authMiddleware,
+  // so req.user will be populated.
+  if (!req.user || req.user.role !== 'admin') {
+    return res.status(403).json({ msg: 'Forbidden: Admin access required' });
+  }
+  next();
 };
 
-export default authMiddleware;
+export { authMiddleware, adminMiddleware };
