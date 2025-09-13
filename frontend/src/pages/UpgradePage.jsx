@@ -1,7 +1,6 @@
 import { useAuth } from '../contexts/AuthContext';
 import { upgradeTenantPlan } from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { FiCheckCircle, FiZap,  } from 'react-icons/fi';
 
 const UpgradePage = () => {
@@ -21,7 +20,7 @@ const UpgradePage = () => {
 
     return (
         <>
-            <Helmet><title>Upgrade Plan | SaaS Notes</title></Helmet>
+            <title>Upgrade Plan | SaaS Notes</title>
             <div className="p-4 md:p-8">
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">Upgrade Your Plan</h1>
                 <p className="text-gray-500 mb-8">Choose the plan that's right for you.</p>

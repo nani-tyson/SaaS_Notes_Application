@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { getNoteById } from '../services/api';
 import { FiArrowLeft } from 'react-icons/fi';
 
@@ -33,7 +32,7 @@ const NoteDetailPage = () => {
 
     return (
         <>
-            <Helmet><title>{note?.title || 'Note'} | SaaS Notes</title></Helmet>
+            <title>{note?.title || 'Note'} | SaaS Notes</title>
             <div className="p-4 md:p-8">
                 <Link to="/" className="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
                     <FiArrowLeft className="mr-2" />

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { getTenantUsers, inviteUser } from '../services/api';
 import { FiUserPlus, FiMail, FiShield, FiUser } from 'react-icons/fi';
 
@@ -40,7 +39,7 @@ const TeamPage = () => {
 
     return (
         <>
-            <Helmet><title>Team Management | SaaS Notes</title></Helmet>
+            <title>Team Management | SaaS Notes</title>
             <div className="p-4 md:p-8">
                 <h1 className="text-3xl font-bold text-gray-800 mb-8">Team Management</h1>
 

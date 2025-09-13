@@ -4,7 +4,6 @@ import AuthorNotesSection from '../components/AuthorNotesSection';
 import EditNoteModal from '../components/EditNoteModal';
 import UpgradePrompt from '../components/UpgradePrompt';
 import { FiPlus, FiStar } from 'react-icons/fi';
-import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../contexts/AuthContext';
 import { getNotes, createNote, deleteNote, updateNote } from '../services/api';
 
@@ -114,7 +113,7 @@ const NotesPage = () => {
 
     return (
         <>
-            <Helmet><title>Your Notes | SaaS Notes</title></Helmet>
+            <title>Your Notes | SaaS Notes</title>
             <div className="p-4 md:p-8">
                 {(() => {
                     if (user?.plan === 'pro') {

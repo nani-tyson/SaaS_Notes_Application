@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+
 import { FiMail, FiLock } from 'react-icons/fi';
 
 const LoginPage = () => {
@@ -24,7 +24,7 @@ const LoginPage = () => {
 
     return (
         <>
-            <Helmet><title>Login | SaaS Notes</title></Helmet>
+            <title>Login | SaaS Notes</title>
             <div className="flex items-center justify-center min-h-screen bg-gray-100">
                 <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
                     <div className="flex flex-col justify-center p-8 md:p-14">
