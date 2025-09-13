@@ -9,6 +9,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import tenantRoutes from "./routes/tenantRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 
 
@@ -30,6 +31,7 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/tenants", tenantRoutes);
+app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => {
   connectDB();

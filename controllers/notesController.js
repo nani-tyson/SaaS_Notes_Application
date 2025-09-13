@@ -28,22 +28,31 @@ export const createNote = async (req, res) => {
 // --- Get All Notes for the Logged-in User's Tenant ---
 export const getNotes = async (req, res) => {
     try {
-        // This query ONLY looks for notes matching the user's tenantId from their JWT.
-        const notes = await Note.find({ tenantId: req.user.tenantId });
+        // --- THIS IS THE ONLY CHANGE ---
+        // We add .populate() to replace the authorId with the actual author's document.
+        // The second argument, 'email', tells it to only include the email field.
+        const notes = await Note.find({ tenantId: req.user.tenantId })
+            .sort({ createdAt: -1 })
+            .populate('authorId', 'email'); // <-- ADD THIS LINE
+
         res.json(notes);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 };
-
 // --- Get, Update, and Delete a Single Note ---
 // We combine the check to ensure the note exists AND belongs to the correct tenant.
 
 export const getNoteById = async (req, res) => {
     try {
-        const note = await Note.findOne({ _id: req.params.id, tenantId: req.user.tenantId });
-        if (!note) return res.status(404).json({ msg: 'Note not found' });
+        // SECURE: Find the note by its ID AND ensure it belongs to the user's tenant
+        const note = await Note.findOne({ _id: req.params.id, tenantId: req.user.tenantId })
+                               .populate('authorId', 'email'); // Also populate the author's email
+
+        if (!note) {
+            return res.status(404).json({ msg: 'Note not found' });
+        }
         res.json(note);
     } catch (err) {
         console.error(err.message);
@@ -51,16 +60,27 @@ export const getNoteById = async (req, res) => {
     }
 };
 
+// @route   PUT /api/notes/:id
+// @desc    Update a note
+// @access  Private
 export const updateNote = async (req, res) => {
     const { title, content } = req.body;
+    
     try {
-        const note = await Note.findOneAndUpdate(
-            { _id: req.params.id, tenantId: req.user.tenantId }, // Condition
-            { $set: { title, content } }, // Update
-            { new: true } // Return the updated document
-        );
-        if (!note) return res.status(404).json({ msg: 'Note not found' });
-        res.json(note);
+        // Find the note, ensuring it belongs to the correct tenant for security
+        let note = await Note.findOne({ _id: req.params.id, tenantId: req.user.tenantId });
+
+        if (!note) {
+            return res.status(404).json({ msg: 'Note not found' });
+        }
+
+        // Update the fields
+        note.title = title;
+        note.content = content;
+        
+        const updatedNote = await note.save();
+        
+        res.json(updatedNote);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
