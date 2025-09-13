@@ -2,11 +2,13 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import Tenant from '../models/Tenant.js'; // <-- We need this to get the plan
+import connectDB from '../config/db.js';
 
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        await connectDB();
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ msg: 'Invalid credentials' });

@@ -1,5 +1,6 @@
 import Note from '../models/Note.js';
 import Tenant from '../models/Tenant.js';
+import connectDB from '../config/db.js';
 
 // --- Create a Note (with Subscription Limit Check) ---
 export const createNote = async (req, res) => {
@@ -7,6 +8,7 @@ export const createNote = async (req, res) => {
     const { id: authorId, tenantId } = req.user;
 
     try {
+        await connectDB();
         // Subscription Gating Logic
         const tenant = await Tenant.findById(tenantId);
         if (tenant.plan === 'free') {
@@ -28,6 +30,7 @@ export const createNote = async (req, res) => {
 // --- Get All Notes for the Logged-in User's Tenant ---
 export const getNotes = async (req, res) => {
     try {
+        await connectDB();
         // --- THIS IS THE ONLY CHANGE ---
         // We add .populate() to replace the authorId with the actual author's document.
         // The second argument, 'email', tells it to only include the email field.
@@ -46,6 +49,7 @@ export const getNotes = async (req, res) => {
 
 export const getNoteById = async (req, res) => {
     try {
+        await connectDB();
         // SECURE: Find the note by its ID AND ensure it belongs to the user's tenant
         const note = await Note.findOne({ _id: req.params.id, tenantId: req.user.tenantId })
                                .populate('authorId', 'email'); // Also populate the author's email
@@ -67,6 +71,7 @@ export const updateNote = async (req, res) => {
     const { title, content } = req.body;
     
     try {
+        await connectDB();
         // Find the note, ensuring it belongs to the correct tenant for security
         let note = await Note.findOne({ _id: req.params.id, tenantId: req.user.tenantId });
 
@@ -89,6 +94,7 @@ export const updateNote = async (req, res) => {
 
 export const deleteNote = async (req, res) => {
     try {
+        await connectDB();
         const note = await Note.findOneAndDelete({ _id: req.params.id, tenantId: req.user.tenantId });
         if (!note) return res.status(404).json({ msg: 'Note not found' });
         res.json({ msg: 'Note removed' });

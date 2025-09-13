@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
+import connectDB from '../config/db.js';
 
 // @route   POST /api/users/invite
 // @desc    Admin invites a new member to their tenant
@@ -9,6 +10,7 @@ export const inviteUser = async (req, res) => {
     const { tenantId } = req.user; // The admin's tenantId from their token
 
     try {
+        await connectDB();
         // Check if user with this email already exists
         let user = await User.findOne({ email });
         if (user) {
@@ -46,6 +48,7 @@ export const inviteUser = async (req, res) => {
 // @access  Private, Admin
 export const getTenantUsers = async (req, res) => {
     try {
+        await connectDB();
         const users = await User.find({ tenantId: req.user.tenantId }).select('-password');
         res.json(users);
     } catch (err) {

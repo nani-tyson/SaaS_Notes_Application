@@ -1,9 +1,11 @@
 import Tenant from '../models/Tenant.js';
 import User from '../models/User.js';       // 1. ADD THIS IMPORT
 import jwt from 'jsonwebtoken';           // 2. ADD THIS IMPORT
+import connectDB from '../config/db.js';
 
 export const upgradeTenantPlan = async (req, res) => {
     try {
+        await connectDB();
         const tenant = await Tenant.findOne({ slug: req.params.slug });
         if (!tenant) {
             return res.status(404).json({ msg: 'Tenant not found' });
