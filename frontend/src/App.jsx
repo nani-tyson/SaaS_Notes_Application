@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { HelmetProvider } from 'react-helmet-async';
 import LoginPage from './pages/LoginPage';
 import NotesPage from './pages/NotesPage';
 import UpgradePage from './pages/UpgradePage';
@@ -34,11 +33,9 @@ function AppRoutes() {
 
 function App() {
     return (
-        <HelmetProvider>
             <AuthProvider>
                 <AppRoutes />
             </AuthProvider>
-        </HelmetProvider>
     );
 }
 
